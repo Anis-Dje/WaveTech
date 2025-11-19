@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../store/auth";
+import { API_ENDPOINTS } from "../../lib/api";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
