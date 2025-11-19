@@ -2,6 +2,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { API_ENDPOINTS } from "../../lib/api";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -22,7 +23,7 @@ export default function Register() {
     setLoading(true);
 
     try {
-      await axios.post("http://127.0.0.1:8000/api/auth/users/", {
+      await axios.post(API_ENDPOINTS.auth.register, {
         username: username.toLowerCase().trim(),
         email: email.toLowerCase().trim(),
         password: password,

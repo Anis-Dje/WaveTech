@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../store/auth";
+import { API_ENDPOINTS } from "../../lib/api";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -17,7 +18,7 @@ export default function Login() {
 
     try {
       const res = await axios.post(
-        "http://127.0.0.1:8000/api/auth/jwt/create/",
+        API_ENDPOINTS.auth.login,
         {
           username: email.toLowerCase().trim(),
           password: password,
@@ -28,7 +29,7 @@ export default function Login() {
       localStorage.setItem("refresh_token", res.data.refresh);
 
       // fetch full user profile and then store token + user
-      const me = await axios.get("http://127.0.0.1:8000/api/auth/users/me/", {
+      const me = await axios.get(API_ENDPOINTS.auth.me, {
         headers: { Authorization: `Bearer ${res.data.access}` },
       });
 

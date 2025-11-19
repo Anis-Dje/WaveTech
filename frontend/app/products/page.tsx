@@ -9,14 +9,14 @@ export default function Products() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api/products/")
+      .get(API_ENDPOINTS.products.list)
       .then((res) => setProducts(res.data));
   }, []);
 
   const addToCart = async (productId: number) => {
     if (!token) return alert("Please login first");
     await axios.post(
-      "http://127.0.0.1:8000/api/cart/",
+      API_ENDPOINTS.cart.add,
       { product: productId, quantity: 1 },
       {
         headers: { Authorization: `Bearer ${token}` },

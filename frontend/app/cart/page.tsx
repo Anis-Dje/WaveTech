@@ -27,7 +27,7 @@ export default function CartPage() {
       try {
         console.log("Loading cart for user:", user?.username);
 
-        const response = await axios.get("http://127.0.0.1:8000/api/cart/", {
+        const response = await axios.get(API_ENDPOINTS.cart.list, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -120,7 +120,7 @@ export default function CartPage() {
               onClick={async () => {
                 try {
                   await axios.post(
-                    "http://127.0.0.1:8000/api/orders/",
+                    API_ENDPOINTS.orders.create,
                     {},
                     { headers: { Authorization: `Bearer ${token}` } }
                   );

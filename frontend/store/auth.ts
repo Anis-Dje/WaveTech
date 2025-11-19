@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { API_ENDPOINTS } from "../lib/api";
 import { persist, createJSONStorage } from "zustand/middleware";
 import axios from "axios";
 
@@ -70,7 +71,7 @@ export const useAuth = create<AuthState>()(
 
         try {
           const response = await axios.post(
-            "http://127.0.0.1:8000/api/auth/jwt/refresh/",
+            API_ENDPOINTS.auth.refresh,
             {
               refresh: refreshToken,
             }
