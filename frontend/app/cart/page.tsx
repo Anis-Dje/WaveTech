@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../store/auth";
 import { useRouter } from "next/navigation";
+import { API_ENDPOINTS } from "../../lib/api";
 
 export default function CartPage() {
   const [cartItems, setCartItems] = useState<any[]>([]);
