@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { useAuth } from "../../store/auth";
 import { useRouter } from "next/navigation";
@@ -26,18 +26,9 @@ export default function CartPage() {
   const { token, user, isAuthenticated, isLoading: authLoading } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    if (authLoading) return;
-
-    if (!isAuthenticated || !token) {
-      router.push("/login");
-      return;
-    }
-
-    loadCart();
-  }, [authLoading, isAuthenticated, token, router]);
-
-  const loadCart = async () => {
+  const loadCart = useCallback(async () => {
+    if (!token) return;
+    
     try {
       const response = await axios.get(API_ENDPOINTS.cart.list, {
         headers: { Authorization: `Bearer ${token}` },
@@ -54,7 +45,18 @@ export default function CartPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token, router]);
+
+  useEffect(() => {
+    if (authLoading) return;
+
+    if (!isAuthenticated || !token) {
+      router.push("/login");
+      return;
+    }
+
+    loadCart();
+  }, [authLoading, isAuthenticated, token, router, loadCart]);
 
   const updateQuantity = async (itemId: number, newQuantity: number) => {
     if (newQuantity < 1) return;
