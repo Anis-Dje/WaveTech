@@ -40,9 +40,9 @@ export default function Products() {
               className="cursor-pointer"
               onClick={() => router.push(`/products/${p.id}`)}
             >
-              {p.image_url ? (
+              {p.image ? (
                 <img
-                  src={p.image_url}
+                  src={p.image}
                   alt={p.name}
                   className="w-full h-48 object-cover hover:scale-105 transition-transform"
                 />

@@ -12,7 +12,7 @@ interface Product {
   price: string;
   category: string;
   stock_quantity: number;
-  image_url?: string;
+  image?: string;
   created_at: string;
 }
 
@@ -117,9 +117,9 @@ export default function ProductDetails() {
             {/* Product Image */}
             <div className="p-8">
               <div className="aspect-square bg-gray-100 rounded-xl flex items-center justify-center">
-                {product.image_url ? (
+                {product.image ? (
                   <img
-                    src={product.image_url}
+                    src={product.image}
                     alt={product.name}
                     className="w-full h-full object-cover rounded-xl"
                   />
