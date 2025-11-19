@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useAuth } from "../../store/auth";
 import { API_ENDPOINTS } from "../../lib/api";
@@ -7,6 +8,7 @@ import { API_ENDPOINTS } from "../../lib/api";
 export default function Products() {
   const [products, setProducts] = useState([]);
   const { token } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     axios
@@ -33,31 +35,42 @@ export default function Products() {
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap- gap-8">
         {products.map((p: any) => (
-          <div
-            key={p.id}
-            className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition"
-          >
-            {p.image && (
-              <img
-                src={p.image}
-                alt={p.name}
-                className="w-full h-64 object-cover"
-              />
-            )}
-            <div className="p-6">
-              <h3 className="text-xl font-bold">{p.name}</h3>
-              <p className="text-gray-600 text-sm my-2">{p.description}</p>
-              <div className="flex justify-between items-center mt-4">
-                <span className="text-2xl font-bold text-[var(--wave-blue)]">
-                  ${p.price}
-                </span>
-                <button
-                  onClick={() => addToCart(p.id)}
-                  className="bg-[var(--wave-blue)] text-white px-6 py-3 rounded-lg hover:bg-blue-700"
-                >
-                  Add to Cart
-                </button>
+          <div key={p.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+            <div 
+              className="cursor-pointer"
+              onClick={() => router.push(`/products/${p.id}`)}
+            >
+              {p.image_url ? (
+                <img
+                  src={p.image_url}
+                  alt={p.name}
+                  className="w-full h-48 object-cover hover:scale-105 transition-transform"
+                />
+              ) : (
+                <div className="w-full h-48 bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors">
+                  <span className="text-gray-500">No Image</span>
+                </div>
+              )}
+              <div className="p-6">
+                <h3 className="text-xl font-bold hover:text-blue-600 transition-colors">{p.name}</h3>
+                <p className="text-gray-600 text-sm my-2 line-clamp-2">{p.description}</p>
+                <div className="mt-4">
+                  <span className="text-2xl font-bold text-[var(--wave-blue)]">
+                    ${p.price}
+                  </span>
+                </div>
               </div>
+            </div>
+            <div className="px-6 pb-6">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  addToCart(p.id);
+                }}
+                className="w-full bg-[var(--wave-blue)] text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Add to Cart
+              </button>
             </div>
           </div>
         ))}

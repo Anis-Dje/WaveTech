@@ -9,10 +9,13 @@ export const API_ENDPOINTS = {
   },
   products: {
     list: `${API_URL}/api/products/`,
+    detail: (id: number) => `${API_URL}/api/products/${id}/`,
   },
   cart: {
     list: `${API_URL}/api/cart/`,
     add: `${API_URL}/api/cart/`,
+    update: (id: number) => `${API_URL}/api/cart/${id}/`,
+    remove: (id: number) => `${API_URL}/api/cart/${id}/`,
   },
   orders: {
     create: `${API_URL}/api/orders/`,
