@@ -121,6 +121,21 @@ export default function CartPage() {
     }
   };
 
+  const calculateTotals = () => {
+    const subtotal = cartItems.reduce(
+      (sum, item) => sum + parseFloat(item.product.price) * item.quantity,
+      0
+    );
+    const shipping = subtotal > 100 ? 0 : 15;
+    const tax = subtotal * 0.08;
+    return {
+      subtotal: subtotal.toFixed(2),
+      shipping: shipping.toFixed(2),
+      tax: tax.toFixed(2),
+      total: (subtotal + shipping + tax).toFixed(2),
+    };
+  };
+
   if (authLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
