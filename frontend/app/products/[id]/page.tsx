@@ -99,24 +99,24 @@ export default function ProductDetails() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-50 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-50 py-6 md:py-12">
       <div className="max-w-6xl mx-auto px-4">
         {/* Back Button */}
         <button
           onClick={() => router.push("/products")}
-          className="mb-8 text-blue-600 hover:text-blue-800 flex items-center gap-2 transition"
+          className="mb-4 md:mb-8 text-blue-600 hover:text-blue-800 flex items-center gap-2 transition"
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Back to Products
+          <span className="text-sm md:text-base">Back to Products</span>
         </button>
 
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          <div className="grid md:grid-cols-2 gap-8">
+        <div className="bg-white rounded-xl md:rounded-2xl shadow-xl overflow-hidden">
+          <div className="grid md:grid-cols-2 gap-4 md:gap-8">
             {/* Product Image */}
-            <div className="p-8">
-              <div className="aspect-square bg-gray-100 rounded-xl flex items-center justify-center">
+            <div className="p-4 md:p-8">
+              <div className="aspect-square bg-gray-100 rounded-lg md:rounded-xl flex items-center justify-center">
                 {product.image ? (
                   <img
                     src={product.image}
@@ -135,45 +135,45 @@ export default function ProductDetails() {
             </div>
 
             {/* Product Info */}
-            <div className="p-8">
-              <div className="mb-4">
-                <span className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
+            <div className="p-4 md:p-8">
+              <div className="mb-3 md:mb-4">
+                <span className="bg-blue-100 text-blue-800 text-xs md:text-sm font-medium px-2 md:px-3 py-1 rounded-full">
                   {product.category}
                 </span>
               </div>
 
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">{product.name}</h1>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-4">{product.name}</h1>
               
-              <div className="text-3xl font-bold text-blue-600 mb-6">${product.price}</div>
+              <div className="text-2xl md:text-3xl font-bold text-blue-600 mb-4 md:mb-6">${product.price}</div>
 
-              <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Description</h3>
-                <p className="text-gray-700 leading-relaxed">{product.description}</p>
+              <div className="mb-4 md:mb-6">
+                <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-2">Description</h3>
+                <p className="text-sm md:text-base text-gray-700 leading-relaxed">{product.description}</p>
               </div>
 
-              <div className="mb-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <span className="text-sm font-medium text-gray-700">Stock:</span>
-                  <span className={`text-sm font-medium ${product.stock_quantity > 0 ? 'text-green-600' : 'text-red-600'}`}>
+              <div className="mb-4 md:mb-6">
+                <div className="flex items-center gap-4 mb-3 md:mb-4">
+                  <span className="text-xs md:text-sm font-medium text-gray-700">Stock:</span>
+                  <span className={`text-xs md:text-sm font-medium ${product.stock_quantity > 0 ? 'text-green-600' : 'text-red-600'}`}>
                     {product.stock_quantity > 0 ? `${product.stock_quantity} available` : 'Out of stock'}
                   </span>
                 </div>
 
                 {product.stock_quantity > 0 && (
-                  <div className="flex items-center gap-4 mb-6">
-                    <label className="text-sm font-medium text-gray-700">Quantity:</label>
+                  <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
+                    <label className="text-xs md:text-sm font-medium text-gray-700">Quantity:</label>
                     <div className="flex items-center border border-gray-300 rounded-lg">
                       <button
                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="px-3 py-2 text-gray-600 hover:text-gray-800 transition"
+                        className="px-2 md:px-3 py-1 md:py-2 text-gray-600 hover:text-gray-800 transition text-sm md:text-base"
                         disabled={quantity <= 1}
                       >
                         -
                       </button>
-                      <span className="px-4 py-2 border-x border-gray-300">{quantity}</span>
+                      <span className="px-3 md:px-4 py-1 md:py-2 border-x border-gray-300 text-sm md:text-base">{quantity}</span>
                       <button
                         onClick={() => setQuantity(Math.min(product.stock_quantity, quantity + 1))}
-                        className="px-3 py-2 text-gray-600 hover:text-gray-800 transition"
+                        className="px-2 md:px-3 py-1 md:py-2 text-gray-600 hover:text-gray-800 transition text-sm md:text-base"
                         disabled={quantity >= product.stock_quantity}
                       >
                         +
@@ -184,11 +184,11 @@ export default function ProductDetails() {
               </div>
 
               {/* Action Buttons */}
-              <div className="space-y-4">
+              <div className="space-y-3 md:space-y-4">
                 <button
                   onClick={addToCart}
                   disabled={product.stock_quantity === 0 || addingToCart}
-                  className={`w-full py-4 rounded-xl font-semibold text-lg transition ${
+                  className={`w-full py-3 md:py-4 rounded-lg md:rounded-xl font-semibold text-base md:text-lg transition ${
                     product.stock_quantity === 0 || addingToCart
                       ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                       : 'bg-blue-600 text-white hover:bg-blue-700'
@@ -201,16 +201,16 @@ export default function ProductDetails() {
 
                 <button
                   onClick={() => router.push("/cart")}
-                  className="w-full py-4 rounded-xl font-semibold text-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
+                  className="w-full py-3 md:py-4 rounded-lg md:rounded-xl font-semibold text-base md:text-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
                 >
                   View Cart
                 </button>
               </div>
 
               {/* Product Details */}
-              <div className="mt-8 pt-8 border-t border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Product Details</h3>
-                <div className="space-y-2 text-sm text-gray-600">
+              <div className="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-gray-200">
+                <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-3 md:mb-4">Product Details</h3>
+                <div className="space-y-2 text-xs md:text-sm text-gray-600">
                   <div>Product ID: {product.id}</div>
                   <div>Added: {new Date(product.created_at).toLocaleDateString()}</div>
                 </div>

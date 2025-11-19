@@ -46,19 +46,19 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-cyan-50">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-cyan-50 px-4">
       <form
         onSubmit={handleLogin}
-        className="bg-white p-12 rounded-3xl shadow-2xl w-96"
+        className="bg-white p-6 sm:p-8 md:p-12 rounded-2xl md:rounded-3xl shadow-2xl w-full max-w-md"
       >
-        <h2 className="text-4xl font-bold text-center mb-10 text-blue-600">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 md:mb-10 text-blue-600">
           Login
         </h2>
 
         <input
           type="email"
           placeholder="Email"
-          className="w-full p-4 mb-6 border border-gray-300 rounded-xl text-lg focus:outline-none focus:border-blue-600"
+          className="w-full p-3 md:p-4 mb-4 md:mb-6 border border-gray-300 rounded-lg md:rounded-xl text-base md:text-lg focus:outline-none focus:border-blue-600"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -66,7 +66,7 @@ export default function Login() {
         <input
           type="password"
           placeholder="Password"
-          className="w-full p-4 mb-8 border border-gray-300 rounded-xl text-lg focus:outline-none focus:border-blue-600"
+          className="w-full p-3 md:p-4 mb-6 md:mb-8 border border-gray-300 rounded-lg md:rounded-xl text-base md:text-lg focus:outline-none focus:border-blue-600"
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -74,7 +74,7 @@ export default function Login() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-600 text-white py-5 rounded-xl text-xl font-bold hover:bg-blue-700 transition disabled:opacity-50"
+          className="w-full bg-blue-600 text-white py-3 md:py-5 rounded-lg md:rounded-xl text-lg md:text-xl font-bold hover:bg-blue-700 transition disabled:opacity-50"
         >
           {loading ? "Logging in..." : "Login with Email"}
         </button>

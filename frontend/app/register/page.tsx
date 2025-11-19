@@ -88,43 +88,43 @@ export default function Register() {
       setLoading(false);
     }
   };  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-50 px-4">
-      <div className="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-md">
-        <h2 className="text-4xl font-bold text-center mb-8 text-green-600">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-50 px-4 py-8">
+      <div className="bg-white p-6 sm:p-8 rounded-2xl md:rounded-3xl shadow-2xl w-full max-w-md">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 md:mb-8 text-green-600">
           Create Account
         </h2>
 
         {errors.general && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm">
+          <div className="mb-4 md:mb-6 p-3 md:p-4 bg-red-50 border border-red-200 rounded-lg md:rounded-xl text-red-600 text-xs md:text-sm">
             {errors.general}
           </div>
         )}
 
-        <form onSubmit={handleRegister} className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
+        <form onSubmit={handleRegister} className="space-y-4 md:space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
             <div>
               <input
                 type="text"
                 placeholder="First Name"
-                className={`w-full p-4 border rounded-xl text-lg focus:outline-none focus:ring-2 ${
+                className={`w-full p-3 md:p-4 border rounded-lg md:rounded-xl text-base md:text-lg focus:outline-none focus:ring-2 ${
                   errors.firstName ? 'border-red-300 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200 focus:border-green-600'
                 }`}
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
               />
-              {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>}
+              {errors.firstName && <p className="text-red-500 text-xs md:text-sm mt-1">{errors.firstName}</p>}
             </div>
             <div>
               <input
                 type="text"
                 placeholder="Last Name"
-                className={`w-full p-4 border rounded-xl text-lg focus:outline-none focus:ring-2 ${
+                className={`w-full p-3 md:p-4 border rounded-lg md:rounded-xl text-base md:text-lg focus:outline-none focus:ring-2 ${
                   errors.lastName ? 'border-red-300 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200 focus:border-green-600'
                 }`}
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
               />
-              {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>}
+              {errors.lastName && <p className="text-red-500 text-xs md:text-sm mt-1">{errors.lastName}</p>}
             </div>
           </div>
 
@@ -132,26 +132,26 @@ export default function Register() {
             <input
               type="text"
               placeholder="Username"
-              className={`w-full p-4 border rounded-xl text-lg focus:outline-none focus:ring-2 ${
+              className={`w-full p-3 md:p-4 border rounded-lg md:rounded-xl text-base md:text-lg focus:outline-none focus:ring-2 ${
                 errors.username ? 'border-red-300 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200 focus:border-green-600'
               }`}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
-            {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
+            {errors.username && <p className="text-red-500 text-xs md:text-sm mt-1">{errors.username}</p>}
           </div>
 
           <div>
             <input
               type="email"
               placeholder="Email"
-              className={`w-full p-4 border rounded-xl text-lg focus:outline-none focus:ring-2 ${
+              className={`w-full p-3 md:p-4 border rounded-lg md:rounded-xl text-base md:text-lg focus:outline-none focus:ring-2 ${
                 errors.email ? 'border-red-300 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200 focus:border-green-600'
               }`}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+            {errors.email && <p className="text-red-500 text-xs md:text-sm mt-1">{errors.email}</p>}
           </div>
 
           <div>
@@ -159,7 +159,7 @@ export default function Register() {
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
-                className={`w-full p-4 border rounded-xl text-lg focus:outline-none focus:ring-2 pr-12 ${
+                className={`w-full p-3 md:p-4 border rounded-lg md:rounded-xl text-base md:text-lg focus:outline-none focus:ring-2 pr-10 md:pr-12 ${
                   errors.password ? 'border-red-300 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200 focus:border-green-600'
                 }`}
                 value={password}
@@ -168,37 +168,37 @@ export default function Register() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                className="absolute right-2 md:right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 text-lg md:text-xl"
               >
                 {showPassword ? "👁️" : "👁️‍🗨️"}
               </button>
             </div>
-            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+            {errors.password && <p className="text-red-500 text-xs md:text-sm mt-1">{errors.password}</p>}
           </div>
 
           <div>
             <input
               type="password"
               placeholder="Confirm Password"
-              className={`w-full p-4 border rounded-xl text-lg focus:outline-none focus:ring-2 ${
+              className={`w-full p-3 md:p-4 border rounded-lg md:rounded-xl text-base md:text-lg focus:outline-none focus:ring-2 ${
                 errors.confirmPassword ? 'border-red-300 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200 focus:border-green-600'
               }`}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
-            {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
+            {errors.confirmPassword && <p className="text-red-500 text-xs md:text-sm mt-1">{errors.confirmPassword}</p>}
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-green-600 text-white py-4 rounded-xl text-xl font-bold hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-green-600 text-white py-3 md:py-4 rounded-lg md:rounded-xl text-lg md:text-xl font-bold hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Creating Account..." : "Create Account"}
           </button>
         </form>
 
-        <p className="text-center mt-6 text-gray-600">
+        <p className="text-center mt-4 md:mt-6 text-sm md:text-base text-gray-600">
           Already have an account?{" "}
           <button
             onClick={() => router.push("/login")}
