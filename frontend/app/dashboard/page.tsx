@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../store/auth";
+import { API_ENDPOINTS } from "../../lib/api";
 
 export default function Dashboard() {
   const { user, token, isAuthenticated } = useAuth();
