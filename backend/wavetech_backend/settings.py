@@ -89,10 +89,10 @@ DJOSER = {
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,
     'SEND_CONFIRMATION_EMAIL': False,
     'SERIALIZERS': {
-        'user_create': 'djoser.serializers.UserCreatePasswordRetypeSerializer',
+        'user_create': 'wavetech_backend.serializers.CustomUserCreateSerializer',
         'current_user': 'djoser.serializers.UserSerializer',
         'user': 'djoser.serializers.UserSerializer',
-        'token_create': 'djoser.serializers.TokenCreateSerializer',  # Add this line
+        'token_create': 'djoser.serializers.TokenCreateSerializer',
     },
     'PERMISSIONS': {
         'user_create': ['rest_framework.permissions.AllowAny'],
