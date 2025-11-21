@@ -7,7 +7,10 @@ User = get_user_model()
 class CustomUserCreateSerializer(UserCreatePasswordRetypeSerializer):
     class Meta(UserCreatePasswordRetypeSerializer.Meta):
         model = User
-        fields = ('id', 'email', 'username', 'first_name', 'last_name', 'password', 're_password')
+        # Only include real model fields in Meta; base class already defines
+        # re_password separately as a write-only field when using the password retype serializer.
+        fields = ('id', 'email', 'username', 'first_name', 'last_name', 'password')
+        extra_kwargs = {"password": {"write_only": True}}
     
     def perform_create(self, validated_data):
         # Djoser calls perform_create from its create() implementation.
