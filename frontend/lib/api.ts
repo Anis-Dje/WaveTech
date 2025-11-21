@@ -18,9 +18,17 @@ export const API_ENDPOINTS = {
     remove: (id: number) => `${API_URL}/api/cart/${id}/`,
   },
   orders: {
+    list: `${API_URL}/api/orders/`,
     create: `${API_URL}/api/orders/`,
+  },
+  users: {
+    list: `${API_URL}/api/users/`,
   },
   admin: {
     stats: `${API_URL}/api/admin/stats/`,
   },
+  dashboard: {
+    stats: `${API_URL}/api/dashboard/`,
+  },
 };
+

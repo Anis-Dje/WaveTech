@@ -1,0 +1,26 @@
+globalThis.__BUILD_MANIFEST = {
+  "pages": {
+    "/_app": []
+  },
+  "devFiles": [],
+  "polyfillFiles": [
+    "static/chunks/beff2_next_dist_build_polyfills_polyfill-nomodule.js"
+  ],
+  "lowPriorityFiles": [],
+  "rootMainFiles": [
+    "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_afa8a78c._.js",
+    "static/chunks/beff2_next_dist_compiled_react-dom_a10b59b4._.js",
+    "static/chunks/beff2_next_dist_compiled_react-server-dom-turbopack_991537e3._.js",
+    "static/chunks/beff2_next_dist_compiled_next-devtools_index_62539789.js",
+    "static/chunks/beff2_next_dist_compiled_7ca7e07a._.js",
+    "static/chunks/beff2_next_dist_client_0948ee18._.js",
+    "static/chunks/beff2_next_dist_5241a955._.js",
+    "static/chunks/beff2_@swc_helpers_cjs_1e9ccb4a._.js",
+    "static/chunks/b7706_ech-complete - Copie_wavetech-complete - Copie_shadcn-dashboard-rebuild_a0ff3932._.js",
+    "static/chunks/cb30c_ech-complete - Copie_wavetech-complete - Copie_shadcn-dashboard-rebuild_07d78c11._.js"
+  ]
+};
+globalThis.__BUILD_MANIFEST.lowPriorityFiles = [
+"/static/" + process.env.__NEXT_BUILD_ID + "/_buildManifest.js",
+"/static/" + process.env.__NEXT_BUILD_ID + "/_ssgManifest.js"
+];

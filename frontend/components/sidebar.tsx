@@ -2,14 +2,15 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, Users, ShoppingCart, Settings, ChevronRight } from "lucide-react"
+import { LayoutDashboard, Users, ShoppingCart, Settings, ChevronRight, Package } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const navItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Users", href: "/users", icon: Users },
-  { name: "Orders", href: "/orders", icon: ShoppingCart },
-  { name: "Settings", href: "/settings", icon: Settings },
+  { name: "Users", href: "/dashboard/users", icon: Users },
+  { name: "Products", href: "/dashboard/products", icon: Package },
+  { name: "Orders", href: "/dashboard/orders", icon: ShoppingCart },
+  { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ]
 
 export function Sidebar() {
