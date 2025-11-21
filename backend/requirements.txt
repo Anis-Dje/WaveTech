@@ -9,3 +9,5 @@ psycopg2-binary>=2.9.9
 gunicorn==21.2.0
 whitenoise==6.6.0
 setuptools>=69.0.0
+django-jazzmin>=3.0.0
+python-dateutil>=2.9.0

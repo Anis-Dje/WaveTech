@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.http import JsonResponse
+from .admin_views import admin_dashboard
 
 def health_check(request):
     return JsonResponse({'status': 'ok', 'message': 'WaveTech API is running'})
@@ -8,6 +9,7 @@ def health_check(request):
 urlpatterns = [
     path('', health_check, name='health_check'),
     path('admin/', admin.site.urls),
+    path('admin/dashboard/', admin_dashboard, name='admin_dashboard'),
     path('api/auth/', include('djoser.urls')),
     path('api/auth/', include('djoser.urls.jwt')),
     path('api/products/', include('products.urls')),

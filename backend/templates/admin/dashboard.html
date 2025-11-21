@@ -1,0 +1,103 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Dashboard | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card bg-primary text-white shadow-sm">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="card-title mb-1">Total Orders (12 mo)</h5>
+              <h2 class="mb-0">{{ totals.orders }}</h2>
+            </div>
+            <i class="fas fa-shopping-cart fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mt-3 mt-md-0">
+      <div class="card bg-success text-white shadow-sm">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="card-title mb-1">Revenue (12 mo)</h5>
+              <h2 class="mb-0">$ {{ totals.revenue }}</h2>
+            </div>
+            <i class="fas fa-dollar-sign fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mt-3 mt-md-0">
+      <div class="card bg-info text-white shadow-sm">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="card-title mb-1">New Users (12 mo)</h5>
+              <h2 class="mb-0">{{ totals.users }}</h2>
+            </div>
+            <i class="fas fa-user-plus fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header"><strong>Orders per Month</strong></div>
+        <div class="card-body">
+          <canvas id="ordersChart" height="120"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header"><strong>Revenue per Month</strong></div>
+        <div class="card-body">
+          <canvas id="revenueChart" height="120"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header"><strong>New Users per Month</strong></div>
+        <div class="card-body">
+          <canvas id="usersChart" height="100"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const labels = {{ labels_json|safe }};
+  const ordersCounts = {{ orders_counts_json|safe }};
+  const revenue = {{ revenue_json|safe }};
+  const newUsers = {{ new_users_json|safe }};
+
+  new Chart(document.getElementById('ordersChart').getContext('2d'), {
+    type: 'bar',
+    data: { labels, datasets: [{ label: 'Orders', data: ordersCounts, backgroundColor: '#0d6efd' }]},
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+
+  new Chart(document.getElementById('revenueChart').getContext('2d'), {
+    type: 'line',
+    data: { labels, datasets: [{ label: 'Revenue ($)', data: revenue, borderColor: '#198754', backgroundColor: 'rgba(25,135,84,.2)', fill: true, tension: .3 }]},
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+
+  new Chart(document.getElementById('usersChart').getContext('2d'), {
+    type: 'bar',
+    data: { labels, datasets: [{ label: 'New Users', data: newUsers, backgroundColor: '#0dcaf0' }]},
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+</script>
+{% endblock %}

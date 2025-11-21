@@ -10,6 +10,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.onrender.com').split(',')
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,7 +45,7 @@ ROOT_URLCONF = 'wavetech_backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -102,7 +103,35 @@ DJOSER = {
     }
 }
 
+JAZZMIN_SETTINGS = {
+    "site_title": "WaveTech Admin",
+    "site_header": "WaveTech Administration",
+    "site_brand": "WaveTech",
+    "welcome_sign": "Welcome to the WaveTech Admin",
+    "topmenu_links": [
+        {"name": "Dashboard", "url": "admin_dashboard", "permissions": ["auth.view_user"]},
+        {"app": "auth"},
+        {"app": "products"},
+        {"app": "orders"},
+    ],
+    "icons": {
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+        "products.product": "fas fa-box",
+        "orders.order": "fas fa-shopping-cart",
+        "cart.cartitem": "fas fa-shopping-basket",
+    },
+    "order_with_respect_to": ["auth", "products", "orders", "cart"],
+}
 
+JAZZMIN_UI_TWEAKS = {
+    "theme": "cyborg",
+    "navbar": "navbar-dark",
+    "navbar_fixed": True,
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_fixed": True,
+    "actions_sticky_top": True,
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
