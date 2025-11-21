@@ -1,7 +1,15 @@
-from djoser.serializers import UserCreatePasswordRetypeSerializer
+from djoser.serializers import UserCreatePasswordRetypeSerializer, UserSerializer
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
+
+
+class CustomUserSerializer(UserSerializer):
+    """Custom user serializer that includes admin status fields"""
+    class Meta(UserSerializer.Meta):
+        model = User
+        fields = ('id', 'email', 'username', 'first_name', 'last_name', 'is_staff', 'is_superuser')
+        read_only_fields = ('id', 'is_staff', 'is_superuser')
 
 
 class CustomUserCreateSerializer(UserCreatePasswordRetypeSerializer):

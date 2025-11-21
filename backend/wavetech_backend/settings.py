@@ -93,8 +93,8 @@ DJOSER = {
         # Ensure both serializers map to our custom one when password retype is enabled
         'user_create': 'wavetech_backend.serializers.CustomUserCreateSerializer',
         'user_create_password_retype': 'wavetech_backend.serializers.CustomUserCreateSerializer',
-        'current_user': 'djoser.serializers.UserSerializer',
-        'user': 'djoser.serializers.UserSerializer',
+        'current_user': 'wavetech_backend.serializers.CustomUserSerializer',
+        'user': 'wavetech_backend.serializers.CustomUserSerializer',
         'token_create': 'djoser.serializers.TokenCreateSerializer',
     },
     'PERMISSIONS': {
@@ -149,7 +149,7 @@ CORS_ALLOWED_ORIGINS = config(
     default='http://localhost:3000,http://127.0.0.1:3000'
 ).split(',')
 
-# Allow all Vercel preview deployments
+
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://.*\.vercel\.app$",
 ]
