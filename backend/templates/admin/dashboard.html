@@ -77,10 +77,10 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  const labels = {{ labels_json|safe }};
-  const ordersCounts = {{ orders_counts_json|safe }};
-  const revenue = {{ revenue_json|safe }};
-  const newUsers = {{ new_users_json|safe }};
+  const labels = JSON.parse('{{ labels_json|escapejs }}');
+  const ordersCounts = JSON.parse('{{ orders_counts_json|escapejs }}');
+  const revenue = JSON.parse('{{ revenue_json|escapejs }}');
+  const newUsers = JSON.parse('{{ new_users_json|escapejs }}');
 
   new Chart(document.getElementById('ordersChart').getContext('2d'), {
     type: 'bar',
