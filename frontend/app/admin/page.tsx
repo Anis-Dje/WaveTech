@@ -18,7 +18,6 @@ import { cn } from "@/lib/utils";
 import { useEffect, useMemo, useState } from "react";
 import { API_ENDPOINTS } from "@/lib/api";
 import { useAuth } from "@/store/auth";
-import { useRouter } from "next/navigation";
 
 ChartJS.register(
   CategoryScale,
@@ -45,17 +44,8 @@ type StatsResponse = {
 
 export default function AdminDashboardPage() {
   const { user, token, isLoading } = useAuth();
-  const router = useRouter();
   const [stats, setStats] = useState<StatsResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  // Redirect non-admins to login once auth state is known
-  useEffect(() => {
-    if (isLoading) return;
-    if (!user || !(user.is_staff || user.is_superuser)) {
-      router.replace("/login");
-    }
-  }, [isLoading, user, router]);
 
   useEffect(() => {
     let abort = false;
@@ -121,8 +111,16 @@ export default function AdminDashboardPage() {
     </div>
   );
 
-  if (isLoading || !user || !(user.is_staff || user.is_superuser)) {
+  if (isLoading) {
     return <Skeleton />;
+  }
+  if (!user || !(user.is_staff || user.is_superuser)) {
+    return (
+      <div className="p-4 md:p-6 lg:p-8">
+        <h1 className="text-2xl md:text-3xl font-semibold mb-2">Admin Dashboard</h1>
+        <p className="text-sm text-muted-foreground">You must be an admin to view this page.</p>
+      </div>
+    );
   }
 
   const revenueLineData = useMemo(
