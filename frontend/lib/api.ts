@@ -20,5 +20,7 @@ export const API_ENDPOINTS = {
   orders: {
     create: `${API_URL}/api/orders/`,
   },
-  admin: `${API_URL}/admin`,
+  admin: {
+    stats: `${API_URL}/api/admin/stats/`,
+  },
 };

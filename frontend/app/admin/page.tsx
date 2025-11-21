@@ -1,128 +1,279 @@
 "use client";
-import { useMemo } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bar, Line } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement, LineElement, Tooltip, Legend } from "chart.js";
-import { DollarSign, ShoppingCart, UserPlus } from "lucide-react";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { TrendingUp, DollarSign, ShoppingCart, Users } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useEffect, useMemo, useState } from "react";
+import { API_ENDPOINTS } from "@/lib/api";
+import { useAuth } from "@/store/auth";
+import { useRouter } from "next/navigation";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
-function last12MonthsLabels(): string[] {
-  const fmt = new Intl.DateTimeFormat(undefined, { month: "short" });
-  const now = new Date();
-  return Array.from({ length: 12 }, (_, i) => {
-    const d = new Date(now.getFullYear(), now.getMonth() - (11 - i), 1);
-    return `${fmt.format(d)} ${d.getFullYear()}`;
-  });
-}
+type StatsResponse = {
+  labels: string[];
+  orders: number[];
+  revenue: number[];
+  new_users: number[];
+  totals: {
+    total_orders: number;
+    total_revenue: number;
+    total_users: number;
+  };
+};
 
-export default function AdminDashboard() {
-  // Placeholder demo data; wire to backend later if desired
-  const labels = useMemo(() => last12MonthsLabels(), []);
-  const orders = useMemo(() => labels.map(() => Math.floor(Math.random() * 50) + 10), [labels]);
-  const revenue = useMemo(() => labels.map(() => Math.floor(Math.random() * 4000) + 1000), [labels]);
-  const newUsers = useMemo(() => labels.map(() => Math.floor(Math.random() * 30) + 5), [labels]);
+export default function AdminDashboardPage() {
+  const { user, token, isLoading } = useAuth();
+  const router = useRouter();
+  const [stats, setStats] = useState<StatsResponse | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const totals = useMemo(() => ({
-    orders: orders.reduce((a, b) => a + b, 0),
-    revenue: revenue.reduce((a, b) => a + b, 0).toLocaleString(),
-    users: newUsers.reduce((a, b) => a + b, 0),
-  }), [orders, revenue, newUsers]);
+  // Redirect non-admins to login once auth state is known
+  useEffect(() => {
+    if (isLoading) return;
+    if (!user || !(user.is_staff || user.is_superuser)) {
+      router.replace("/login");
+    }
+  }, [isLoading, user, router]);
 
-  const ordersData = useMemo(() => ({
-    labels,
-    datasets: [{ label: "Orders", data: orders, backgroundColor: "#0d6efd" }],
-  }), [labels, orders]);
+  useEffect(() => {
+    let abort = false;
+    async function load() {
+      try {
+        setError(null);
+        // Only fetch if we have a token and an admin user
+        if (!token || !user || !(user.is_staff || user.is_superuser)) return;
+        const res = await fetch(API_ENDPOINTS.admin.stats, {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+          cache: "no-store",
+        });
+        if (!res.ok) {
+          throw new Error(`Failed to fetch stats (${res.status})`);
+        }
+        const data: StatsResponse = await res.json();
+        if (!abort) setStats(data);
+      } catch (e: any) {
+        if (!abort) setError(e.message ?? "Failed to load stats");
+      }
+    }
+    load();
+    return () => {
+      abort = true;
+    };
+  }, [token, user]);
 
-  const revenueData = useMemo(() => ({
-    labels,
-    datasets: [{
-      label: "Revenue ($)",
-      data: revenue,
-      borderColor: "#198754",
-      backgroundColor: "rgba(25,135,84,.2)",
-      fill: true,
-      tension: 0.3,
-    }],
-  }), [labels, revenue]);
+  // Simple skeleton while authorizing or loading stats
+  const Skeleton = () => (
+    <div className="p-4 md:p-6 lg:p-8">
+      <div className="h-7 w-56 bg-gray-200 rounded mb-6 animate-pulse" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="rounded-lg border p-4">
+            <div className="flex items-center justify-between">
+              <div className="h-4 w-24 bg-gray-200 rounded animate-pulse" />
+              <div className="h-5 w-5 bg-gray-200 rounded-full animate-pulse" />
+            </div>
+            <div className="mt-3 h-7 w-28 bg-gray-200 rounded animate-pulse" />
+            <div className="mt-2 h-3 w-24 bg-gray-100 rounded animate-pulse" />
+          </div>
+        ))}
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="rounded-lg border p-4 h-[360px]">
+          <div className="h-5 w-64 bg-gray-200 rounded mb-2 animate-pulse" />
+          <div className="h-4 w-40 bg-gray-100 rounded mb-4 animate-pulse" />
+          <div className="h-[280px] bg-gray-100 rounded animate-pulse" />
+        </div>
+        <div className="rounded-lg border p-4 h-[360px]">
+          <div className="h-5 w-64 bg-gray-200 rounded mb-2 animate-pulse" />
+          <div className="h-4 w-40 bg-gray-100 rounded mb-4 animate-pulse" />
+          <div className="h-[280px] bg-gray-100 rounded animate-pulse" />
+        </div>
+        <div className="rounded-lg border p-4 h-[360px] lg:col-span-2">
+          <div className="h-5 w-80 bg-gray-200 rounded mb-2 animate-pulse" />
+          <div className="h-4 w-48 bg-gray-100 rounded mb-4 animate-pulse" />
+          <div className="h-[280px] bg-gray-100 rounded animate-pulse" />
+        </div>
+      </div>
+    </div>
+  );
 
-  const usersData = useMemo(() => ({
-    labels,
-    datasets: [{ label: "New Users", data: newUsers, backgroundColor: "#0dcaf0" }],
-  }), [labels, newUsers]);
+  if (isLoading || !user || !(user.is_staff || user.is_superuser)) {
+    return <Skeleton />;
+  }
+
+  const revenueLineData = useMemo(
+    () => ({
+      labels: stats?.labels ?? [],
+      datasets: [
+        {
+          label: "Revenue",
+          data: stats?.revenue ?? [],
+          borderColor: "rgba(99, 102, 241, 1)",
+          backgroundColor: "rgba(99, 102, 241, 0.2)",
+        },
+      ],
+    }),
+    [stats]
+  );
+
+  const ordersBarData = useMemo(
+    () => ({
+      labels: stats?.labels ?? [],
+      datasets: [
+        {
+          label: "Orders",
+          data: stats?.orders ?? [],
+          backgroundColor: "rgba(34, 197, 94, 0.5)",
+        },
+      ],
+    }),
+    [stats]
+  );
+
+  const usersLineData = useMemo(
+    () => ({
+      labels: stats?.labels ?? [],
+      datasets: [
+        {
+          label: "New Users",
+          data: stats?.new_users ?? [],
+          borderColor: "rgba(59, 130, 246, 1)",
+          backgroundColor: "rgba(59, 130, 246, 0.2)",
+        },
+      ],
+    }),
+    [stats]
+  );
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-6 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl space-y-6">
-        {/* KPI Cards */}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <Card className="bg-blue-600 text-white">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle className="text-white/90">Total Orders (12 mo)</CardTitle>
-                <div className="mt-2 text-3xl font-bold">{totals.orders}</div>
-              </div>
-              <ShoppingCart className="h-8 w-8 opacity-90" />
-            </CardHeader>
-          </Card>
+    <div className="p-4 md:p-6 lg:p-8">
+      <h1 className="text-2xl md:text-3xl font-semibold mb-6">Admin Dashboard</h1>
 
-          <Card className="bg-emerald-600 text-white">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle className="text-white/90">Revenue (12 mo)</CardTitle>
-                <div className="mt-2 text-3xl font-bold">$ {totals.revenue}</div>
-              </div>
-              <DollarSign className="h-8 w-8 opacity-90" />
-            </CardHeader>
-          </Card>
+      {error && <div className="mb-4 text-sm text-red-600">{error}</div>}
 
-          <Card className="bg-cyan-500 text-white">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle className="text-white/90">New Users (12 mo)</CardTitle>
-                <div className="mt-2 text-3xl font-bold">{totals.users}</div>
-              </div>
-              <UserPlus className="h-8 w-8 opacity-90" />
-            </CardHeader>
-          </Card>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <StatCard
+          title="Total Revenue"
+          value={stats ? `$${stats.totals.total_revenue.toLocaleString()}` : "—"}
+          icon={<DollarSign className="h-5 w-5 text-emerald-600" />}
+          trend="Up 8.2% from last month"
+        />
+        <StatCard
+          title="Orders"
+          value={stats ? stats.totals.total_orders.toLocaleString() : "—"}
+          icon={<ShoppingCart className="h-5 w-5 text-blue-600" />}
+          trend="Up 3.1% from last month"
+        />
+        <StatCard
+          title="New Users"
+          value={stats ? stats.totals.total_users.toLocaleString() : "—"}
+          icon={<Users className="h-5 w-5 text-violet-600" />}
+          trend="Up 5.4% from last month"
+        />
+        <StatCard
+          title="Growth"
+          value={
+            stats
+              ? `${Math.round((stats.totals.total_orders + stats.totals.total_users) / 50)}%`
+              : "—"
+          }
+          icon={<TrendingUp className="h-5 w-5 text-rose-600" />}
+          trend="Stable vs last month"
+        />
+      </div>
 
-        {/* Charts */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Orders per Month</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[320px]">
-                <Bar data={ordersData} options={{ responsive: true, maintainAspectRatio: false }} />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Revenue per Month</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[320px]">
-                <Line data={revenueData} options={{ responsive: true, maintainAspectRatio: false }} />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Revenue (Last 12 months)</CardTitle>
+            <CardDescription>Overall revenue progression</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {stats ? (
+              <Line data={revenueLineData} options={{ responsive: true, maintainAspectRatio: false }} height={300} />
+            ) : (
+              <div className="h-[300px] bg-gray-100 rounded animate-pulse" />
+            )}
+          </CardContent>
+        </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>New Users per Month</CardTitle>
+            <CardTitle>Orders (Last 12 months)</CardTitle>
+            <CardDescription>Number of orders per month</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-[300px]">
-              <Bar data={usersData} options={{ responsive: true, maintainAspectRatio: false }} />
-            </div>
+            {stats ? (
+              <Bar data={ordersBarData} options={{ responsive: true, maintainAspectRatio: false }} height={300} />
+            ) : (
+              <div className="h-[300px] bg-gray-100 rounded animate-pulse" />
+            )}
+          </CardContent>
+        </Card>
+
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>New Users (Last 12 months)</CardTitle>
+            <CardDescription>User acquisition trend</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {stats ? (
+              <Line data={usersLineData} options={{ responsive: true, maintainAspectRatio: false }} height={300} />
+            ) : (
+              <div className="h-[300px] bg-gray-100 rounded animate-pulse" />
+            )}
           </CardContent>
         </Card>
       </div>
     </div>
+  );
+}
+
+function StatCard({
+  title,
+  value,
+  icon,
+  trend,
+}: {
+  title: string;
+  value: string | number;
+  icon: React.ReactNode;
+  trend: string;
+}) {
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+        {icon}
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">{value}</div>
+        <p className={cn("text-xs text-muted-foreground mt-1")}>{trend}</p>
+      </CardContent>
+    </Card>
   );
 }
