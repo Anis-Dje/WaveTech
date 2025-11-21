@@ -89,7 +89,9 @@ DJOSER = {
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,
     'SEND_CONFIRMATION_EMAIL': False,
     'SERIALIZERS': {
+        # Ensure both serializers map to our custom one when password retype is enabled
         'user_create': 'wavetech_backend.serializers.CustomUserCreateSerializer',
+        'user_create_password_retype': 'wavetech_backend.serializers.CustomUserCreateSerializer',
         'current_user': 'djoser.serializers.UserSerializer',
         'user': 'djoser.serializers.UserSerializer',
         'token_create': 'djoser.serializers.TokenCreateSerializer',
