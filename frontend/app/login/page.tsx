@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../store/auth";
 import { API_ENDPOINTS } from "../../lib/api";
+import { register } from "module";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -78,6 +79,15 @@ export default function Login() {
         >
           {loading ? "Logging in..." : "Login with Email"}
         </button>
+        <p className="text-center mt-4 md:mt-6 text-sm md:text-base text-gray-600">
+          Dont have an account?{" "}
+          <button
+            onClick={() => router.push("/register")}
+            className="text-blue-600 hover:text-blue-700 font-semibold"
+          >
+            Sign Up
+          </button>
+        </p>
       </form>
     </div>
   );
