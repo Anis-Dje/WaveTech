@@ -149,6 +149,11 @@ CORS_ALLOWED_ORIGINS = config(
     default='http://localhost:3000,http://127.0.0.1:3000'
 ).split(',')
 
+# Allow all Vercel preview deployments
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.vercel\.app$",
+]
+
 # Allow credentials
 CORS_ALLOW_CREDENTIALS = True
 
@@ -157,6 +162,11 @@ CSRF_TRUSTED_ORIGINS = config(
     'CSRF_TRUSTED_ORIGINS',
     default='http://localhost:3000,http://127.0.0.1:3000'
 ).split(',')
+
+# Add wildcard support for Vercel preview deployments
+CSRF_TRUSTED_ORIGINS += [
+    'https://*.vercel.app',
+]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
