@@ -3,6 +3,7 @@ from django.urls import path, include
 from django.http import JsonResponse
 from .admin_views import admin_dashboard
 from .admin_api import AdminStatsView
+from .dashboard_api import DashboardStatsView
 
 def health_check(request):
     return JsonResponse({'status': 'ok', 'message': 'WaveTech API is running'})
@@ -17,4 +18,5 @@ urlpatterns = [
     path('api/cart/', include('cart.urls')),
     path('api/orders/', include('orders.urls')),
     path('api/admin/stats/', AdminStatsView.as_view(), name='admin-stats'),
+    path('api/dashboard/', DashboardStatsView.as_view(), name='dashboard-stats'),
 ]
